@@ -1,0 +1,185 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String @id
+  name         String
+  email        String @unique
+  passwordHash String @map("password_hash")
+  status       String @default("ACTIVE")
+  role         String @default("MEMBER")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  productCreator        Product[]
+  premisseGroupCreator  PremisseGroup[]
+  channelCreator        Channel[]
+  clientCategoryCreator ClientCategory[]
+  premisseCreator       Premisse[]
+  salesVolumeCreator    SalesVolume[]
+  HistoryLog            HistoryLog[]
+  FactProduts           FactProduts[]
+
+  @@index(email)
+  @@map("users")
+}
+
+model Product {
+  id       String  @id
+  name     String
+  imageUrl String? @map("image_url")
+  status   String  @default("ACTIVE")
+  line     String
+  category String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  createdBy   User          @relation(fields: [creatorId], references: [id])
+  creatorId   String        @map("creator_id")
+  FactProduts FactProduts[]
+
+  @@unique([name, line, category])
+  @@index([name, id])
+  @@map("products")
+}
+
+model ClientCategory {
+  id     String @id
+  name   String
+  status String @default("ACTIVE")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  createBy    User          @relation(fields: [creatorId], references: [id])
+  creatorId   String        @map("creator_id")
+  FactProduts FactProduts[]
+
+  @@map("client_categories")
+}
+
+model Channel {
+  id     String @id
+  name   String
+  status String @default("ACTIVE")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  createBy  User   @relation(fields: [creatorId], references: [id])
+  creatorId String @map("creator_id")
+
+  premisseGroup PremisseGroup[]
+  FactProduts   FactProduts[]
+
+  @@map("channel")
+}
+
+model PremisseGroup {
+  id     String @id
+  name   String
+  status String @default("ACTIVE")
+
+  channel   Channel @relation(fields: [channelId], references: [id])
+  channelId String  @map("channel_id")
+
+  createBy  User   @relation(fields: [creatorId], references: [id])
+  creatorId String @map("creator_id")
+
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  premisses Premisse[]
+
+  @@map("premisses_group")
+}
+
+model Premisse {
+  id     String @id
+  name   String
+  status String @default("ACTIVE")
+
+  premisseGroup   PremisseGroup @relation(fields: [premisseGroupId], references: [id])
+  premisseGroupId String        @map("premisses_group_id")
+
+  createBy  User   @relation(fields: [creatorId], references: [id])
+  creatorId String @map("creator_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("premisse")
+}
+
+model SalesVolume {
+  id     String @id
+  name   String
+  status String @default("ACTIVE")
+
+  createBy  User   @relation(fields: [creatorId], references: [id])
+  creatorId String @map("creator_id")
+
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  FactProduts FactProduts[]
+
+  @@map("sales_volume")
+}
+
+enum Action {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+model HistoryLog {
+  id String @id @default(uuid())
+
+  table_name      String
+  idObjectUpdated String
+  fieldUpdated    String
+  action          Action
+  motivo          String
+
+  createBy  User   @relation(fields: [creatorId], references: [id])
+  creatorId String @map("creator_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([table_name, idObjectUpdated])
+  @@map("history_log")
+}
+
+model FactProduts {
+  id           String @id @default(uuid())
+  cost         Float
+  variableCost Float  @map("variable_cost")
+  margin       Float
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @map("product_id")
+
+  salesVolume   SalesVolume @relation(fields: [salesVolumeId], references: [id])
+  salesVolumeId String      @map("sales_volume_id")
+
+  clientCategory   ClientCategory @relation(fields: [clientCategoryId], references: [id])
+  clientCategoryId String         @map("client_category_id")
+
+  channel   Channel @relation(fields: [channelId], references: [id])
+  channelId String  @map("channel_id")
+
+  createBy  User   @relation(fields: [creatorId], references: [id])
+  creatorId String @map("creator_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index(productId)
+  @@map("fact_products")
+}

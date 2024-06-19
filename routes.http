@@ -1,0 +1,26 @@
+# @name create-user
+POST http://localhost:3333/users
+content-type: application/json
+
+{
+    "name": "Gustavo",
+    "email": "gbarbosn@gmail.com",
+    "password": "123456",
+    "role":"MEMBER"
+}
+
+###
+# @name authenticate-user-with-email-and-password
+POST http://localhost:3000/sessions/password
+content-type: application/json
+
+{
+    "email": "gbarbosn@acme.com",
+    "password": "123456"
+}
+
+###
+# @name get-user-profile
+GET http://localhost:3000/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3M2JhYWQ3Ny05Y2RmLTRiYWEtOTE4MS1hNGYxMzY4YWE2OWEiLCJpYXQiOjE3MTg1OTI3ODMsImV4cCI6MTcxOTE5NzU4M30.klHePnWwkZc1Ay-lG2eHfjJYVdybVyY7gIZufcC7YhU
+
