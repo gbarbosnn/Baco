@@ -26,7 +26,6 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
     })
   }
 
-  console.error(error)
 
   // send error to some error tracking service
 

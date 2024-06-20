@@ -3,8 +3,8 @@ POST http://localhost:3333/users
 content-type: application/json
 
 {
-    "name": "Gustavo",
-    "email": "gbarbosn@gmail.com",
+    "name": "Juanaa Pinto",
+    "email": "gbarbosnda5@gmail.com",
     "password": "123456",
     "role":"MEMBER"
 }
@@ -23,4 +23,22 @@ content-type: application/json
 # @name get-user-profile
 GET http://localhost:3000/profile
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3M2JhYWQ3Ny05Y2RmLTRiYWEtOTE4MS1hNGYxMzY4YWE2OWEiLCJpYXQiOjE3MTg1OTI3ODMsImV4cCI6MTcxOTE5NzU4M30.klHePnWwkZc1Ay-lG2eHfjJYVdybVyY7gIZufcC7YhU
+
+###
+# @name get-user-profile
+GET http://localhost:3000/profile
+content-type: application/json
+{
+    "email": "gbarbosn@acme.com",
+    "password": "123456"
+}
+
+###
+# @name get-all-users-accounts
+GET http://localhost:3333/users
+?page=1
+&name=ge
+&orderBy=email
+
+
 

@@ -10,13 +10,15 @@ export class GetUserUseCase {
   }
 
   async execute(data: IGetUserRequestDTO): Promise<User> {
-    const { id } = data
+    const idUser = data.id
 
-    const user = await this.userRepository.findById(id)
+    const user = await this.userRepository.findById(idUser)
 
     if (!user) {
       throw new BadRequestError('User not found')
     }
+
+
 
     return user
   }

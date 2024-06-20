@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 
 import { InMemoryUserRepository } from '@/repositories/in-memory/InMemoryUserRepository'
 
-import { CreateUserUseCase } from '../CreateUser/CreateUserUseCase'
+import { CreateUserUseCase } from '../../CreateUser/CreateUserUseCase'
 import { GetUserUseCase } from './GetUserUseCase'
 
 describe('GetUser Use Case', () => {
@@ -25,6 +25,7 @@ describe('GetUser Use Case', () => {
     })
 
     const newUser = await userRepository.findByEmail('johndoe@example.com')
+
     if (!newUser) {
       throw new Error('User not found')
     }

@@ -19,26 +19,25 @@ export const app = fastify().withTypeProvider<ZodTypeProvider>()
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
 
-app.register(fastifyCors)
-app.register(userRoutes)
 app.setErrorHandler(errorHandler)
 
 app.register(fastifySwagger, {
   openapi: {
     info: {
-      title: 'Next.js SaaS Api',
-      description: 'Fullstack SaaS app with Next.js',
+      title: 'Baco API',
+      description: 'Fullstack app with Next.js',
       version: '1.0.0',
     },
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-      },
-    },
+    servers: [],
+    // components: {
+    //   securitySchemes: {
+    //     bearerAuth: {
+    //       type: 'http',
+    //       scheme: 'bearer',
+    //       bearerFormat: 'JWT',
+    //     },
+    //   },
+    // },
   },
   transform: jsonSchemaTransform,
 })
@@ -46,6 +45,9 @@ app.register(fastifySwagger, {
 app.register(fastifySwaggerUI, {
   routePrefix: '/docs',
 })
+
+app.register(fastifyCors)
+app.register(userRoutes)
 
 // app.register(fastifyJwt, {
 //   secret: env.JWT_SECRET,

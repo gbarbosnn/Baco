@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { describe, expect, it, vi } from 'vitest'
 
-import { GetUserRequestSchema } from '@/use-cases/User/GetUser/GetUserDTO'
+import { GetUserRequestSchema } from '@/use-cases/User/GetUser/GetOne/GetUserDTO'
 
 import { getAccount } from './get-account'
 
